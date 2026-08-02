@@ -7,46 +7,90 @@
 
 import random
 
+
+hangman_art = {0: ("   ",
+                   "   ",
+                   "   "),
+               1: (" o ",
+                   "   ",
+                   "   "),
+               2: (" o ",
+                   " | ",
+                   "   "),
+               3: (" o ",
+                   "/| ",
+                   "   "),
+               4: (" o ",
+                   "/|\\",
+                   "   "),
+               5: (" o ",
+                   "/|\\",
+                   "/  "),
+               6: (" o ",
+                   "/|\\",
+                   "/ \\")}
 # List of possible words
-word_list = ["apple", "banana", "computer", "python", "orange"]
 
-# Choose a random word
-chosen_word = random.choice(word_list)
+words = ["apple", "banana", "orange", "grape", "mango",
+         "strawberry", "pineapple", "watermelon", "peach", "pear"]
 
-# Create blanks
-display = []
-for letter in chosen_word:
-    display.append("_")
 
-# Number of lives
-lives = 6
+def display_man(wrong_guesses):
+    print("**********")
+    for line in hangman_art[wrong_guesses]:
+        print(line)
+    print("**********")
 
-print("Welcome to Hangman!")
-print(" ".join(display))
 
-# Game loop
-while "_" in display and lives > 0:
+def display_hint(hint):
+    print(" ".join(hint))
 
-    guess = input("Guess a letter: ").lower()
 
-    # Check the guessed letter
-    for position in range(len(chosen_word)):
-        letter = chosen_word[position]
+def display_answer(answer):
+    print(" ".join(answer))
 
-        if letter == guess:
-            display[position] = guess
 
-    # If the guess is wrong
-    if guess not in chosen_word:
-        lives -= 1
-        print(f"Wrong! You have {lives} lives left.")
+def main():
+    answer = random.choice(words)
+    hint = ["_"] * len(answer)
+    wrong_guesses = 0
+    guessed_letters = set()
+    is_running = True
 
-    print(" ".join(display))
 
-# Game result
-if "_" not in display:
-    print("🎉 You win!")
+while is_running:
+    display_man(wrong_guesses)
+    display_hint(hint)
+    guess = input("Enter a letter: ").lower()
 
-else:
-    print("💀 You lose!")
-    print(f"The word was: {chosen_word}")
+    if len(guess) != 1 or not guess.isalpha():
+        print("Invalid input")
+        continue
+
+    if guess in guessed_letters:
+        print(f"{guess} is already guessed")
+        continue
+
+    guessed_letters.add(guess)
+
+    if guess in answer:
+        for i in range(len(answer)):
+            if answer[i] == guess:
+                hint[i] = guess
+    else:
+        wrong_guesses += 1
+
+    if "_" not in hint:
+        display_man(wrong_guesses)
+        display_answer(answer)
+        print("YOU WIN!")
+        is_running = False
+    elif wrong_guesses >= len(hangman_art) - 1:
+        display_man(wrong_guesses)
+        display_answer(answer)
+        print("YOU LOSE!")
+        is_running = False
+
+
+if __name__ == "__main__":
+    main()
