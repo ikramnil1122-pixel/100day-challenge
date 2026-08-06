@@ -18,6 +18,10 @@ def draw_computer():
         computer_cards.append(f)
 
 
+def blackjack(cards):
+    return len(cards) == 2 and sum(cards) == 21
+
+
 def result():
     if sum(your_cards) > 21 and 11 in your_cards:
         your_cards.remove(11)
@@ -31,33 +35,59 @@ def result():
 
 
 def compare(resulte_you, resulte_computer):
-    if resulte_you > 21:
+    if blackjack(your_cards) and blackjack(computer_cards):
+        print("both have blackjack. draw")
+    elif blackjack(your_cards):
+        print("blackjack! you win")
+    elif blackjack(computer_cards):
+        print("computer blackjack! you lose")
+    elif resulte_you > 21:
         print("you went over. you lose")
     elif resulte_computer > 21:
         print("computer went over. you win")
-    elif resulte_you == 21 and resulte_computer == 21:
+    elif resulte_you == resulte_computer:
         print("draw")
+
     elif resulte_you > resulte_computer:
         print("you win")
-    else:
+    elif resulte_you < resulte_computer:
         print("you lose")
+    else:
+        print("draw!")
 
 
-[a, b] = random.choice(cart, 2)
-[c, d] = random.choice(cart, 2)
+[a, b] = random.choices(cart, k=2)
+[c, d] = random.choices(cart, k=2)
 your_cards = [a, b]
 computer_cards = [c, d]
+print(f'your cards is:{your_cards}')
+print(f'the computer\'s cards is:[{computer_cards[0]}, ?]')
+if blackjack(your_cards) or blackjack(computer_cards):
+    print("your_cards is:", your_cards)
+    print("the computer's cards is:", computer_cards)
+    resulte_you, resulte_computer = result()
+    compare(resulte_you, resulte_computer)
+    game_over = True
+else:
+    game_over = False
 
-print(f'your cards is:[{a} : {b}]')
-print(f'the computer\'s first cards is:[{c} : {'*'}]')
-game_over = False
 while not game_over:
-    if result_computer() == 21:
-        print("computer has a blackjack. you lose")
-
-    input = str(input(
-        'type n if you want to draw another card or type s if you want to stop drawing cards'))
-    if input == 'n':
+    choice = input(
+        'type n if you want to draw another card or type s if you want to stop drawing cards')
+    if choice == 'n':
         draw()
+        print(f'your cards is:{your_cards}')
+        resulte_you, resulte_computer = result()
+        if resulte_you > 21:
+            print(f"computer's cards is:{computer_cards}")
+            compare(resulte_you, resulte_computer)
+            game_over = True
+        else:
+            continue
     else:
-        compare()
+        draw_computer()
+        resulte_you, resulte_computer = result()
+        print(f'your cards is:{your_cards}')
+        print(f'the computer\'s cards is:{computer_cards}')
+        compare(resulte_you, resulte_computer)
+        game_over = True
