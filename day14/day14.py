@@ -1,6 +1,4 @@
-from art import logo, vs
 from game_data import data
-from replit import clear
 import random
 
 
@@ -23,13 +21,12 @@ def higher_lower():
     correct = True
 
     while correct:
-        clear()
-        print(logo)
+
         if score > 0:
             print(f"Correct! Your current score is: {score}.")
         # print (followers_a, followers_b)
         print(f"Compare A: {profile_a}")
-        print(vs)
+
         print(f"Compare B: {profile_b}")
 
         a_or_b = input(
