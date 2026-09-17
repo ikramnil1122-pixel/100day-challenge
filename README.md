@@ -19,3 +19,4 @@
 - Day 15: Local Development Environment Setup & the Coffee Machine
 - Day 16: Object Oriented Programming (OOP)
 - Day 17: The Quiz Project & The Benefits of OOP
+- Day 18 - Turtle & the Graphical User Interface (GUI)
